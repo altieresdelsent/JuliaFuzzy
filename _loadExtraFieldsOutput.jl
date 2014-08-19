@@ -1,0 +1,12 @@
+function _loadExtraFieldsOutput!(functionParenthesis,variableSkeleton)
+    name = Expr(:quote,variableSkeleton.name)
+    push!(functionParenthesis,name)
+    push!(functionParenthesis,variableSkeleton.defuzzifier)
+    push!(functionParenthesis,variableSkeleton.maxValue)
+    push!(functionParenthesis,variableSkeleton.minValue)
+    push!(functionParenthesis,variableSkeleton.fuzzyOutput)
+    push!(functionParenthesis,variableSkeleton.lastValidOutput)
+    push!(functionParenthesis,variableSkeleton._lockOutputRange)
+    push!(functionParenthesis,variableSkeleton._lockValidOutput)
+    push!(functionParenthesis,variableSkeleton._defaultValue)
+end

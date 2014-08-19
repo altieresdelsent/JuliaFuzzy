@@ -1,4 +1,4 @@
-include("JuliaFuzzy.jl")
+using JuliaFuzzy
 
 using JuliaFuzzy.EngineSkeleton
 using JuliaFuzzy.Norms.TNorm
@@ -22,8 +22,8 @@ float = Float64
 resolution = 200.0
 
 engineSkeleton = JuliaFuzzy.EngineSkeleton{float}()
-engineSkeleton.inputVariables = InputVariable{float}[]
-engineSkeleton.outputVariables = OutputVariable{float}[]
+engineSkeleton.inputVariables = InputVariable[]
+engineSkeleton.outputVariables = OutputVariable[]
 engineSkeleton.ruleBlocks = RuleBlock[]
 engineSkeleton.conjunction = Minimum()
 engineSkeleton.disjunction = Maximum()
@@ -32,7 +32,7 @@ engineSkeleton.accumulation = AlgebraicSum()
 engineSkeleton.defuzzifier = Centroid{float}(resolution)
 
 
-Ambient = InputVariable{float}()
+Ambient = InputVariable{float}(0.000)
 Ambient.value = 0.000
 Ambient.name = :Ambient
 Ambient.maxValue = 1.0
@@ -71,7 +71,6 @@ push!(Sound.terms,Gaussian{float}(:QUIET, 0.750, 0.125));
 
 push!(engineSkeleton.inputVariables,Sound)
 
-
 Power = OutputVariable{float}()
 Power.name = :Power
 Power.maxValue = 2.0
@@ -98,19 +97,21 @@ push!(PowerController.rules,rule3)
 
 JuliaFuzzy.configure(engineSkeleton)
 
-for i in 1:48
-        light = Ambient.minValue + i * ((Ambient.maxValue-Ambient.minValue) / 50);
-        Ambient.value = light;
-        Person.value = light;
-        Sound.value = light;
+engine = JuliaFuzzy.buildEngine(engineSkeleton,false)
 
+for i in 2:48
+        light = engine.inputVariables.Ambient.minValue + i * ((Ambient.maxValue-Ambient.minValue) / 50);
+        engine.inputVariables.Ambient.value = light;
+        engine.inputVariables.Person.value = light;
+        engine.inputVariables.Sound.value = light;
+#
         print("Light:");
         print("$light");
         print("\n")
+#
+        JuliaFuzzy.process(engine)
 
-        JuliaFuzzy.process(engineSkeleton)
-
-        finalValue = JuliaFuzzy.Variables.defuzzify(Power)
+        finalValue = JuliaFuzzy.Variables.defuzzify(engine.outputVariables.Power)
 
 
         print("power:");

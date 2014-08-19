@@ -45,7 +45,10 @@ module Rules
         activation::TNorm;
 
         function RuleBlock(name::Symbol)
-            return new(name,Rule[])
+            this = new()
+            this.name = name
+            this.rules = Rule[]
+            return this
         end
     end
 

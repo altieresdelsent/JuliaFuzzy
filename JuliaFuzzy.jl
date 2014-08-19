@@ -27,20 +27,23 @@ module JuliaFuzzy
     using .Variables.OutputVariable
     using .Variables.DoesNotExistVariable
     using .Variables.getTerm
+    using .Variables.baseInputVariable
+    using .Variables.baseOutputVariable
+    using .Variables.baseInputVariables
+    using .Variables.baseOutputVariables
 
     using .Defuzzifiers.Defuzzifier
 
     using .Terms.Term
+    using .Terms.Accumulated
     using .Terms.DoesNotExistTerm
 
     using .Norms.SNorm
     using .Norms.TNorm
 
-    abstract baseInputsVariables;
-    abstract baseOutputsVariables;
-    abstract baseRules;
+    abstract Engine;
 
-    type EngineSkeleton{T <: FloatingPoint}
+    type EngineSkeleton{T <: FloatingPoint} <: Engine
         inputVariables::Array{InputVariable{T},1}
         outputVariables::Array{OutputVariable{T},1}
         ruleBlocks::Array{RuleBlock,1}
@@ -49,47 +52,55 @@ module JuliaFuzzy
         activation::TNorm
         accumulation::SNorm
         defuzzifier::Defuzzifier
+        inputsType::DataType
+        outputsType::DataType
         EngineSkeleton() = new()
     end
 
-    type Engine
-        inputVariables::baseInputsVariables
-        outputVariables::baseOutputsVariables
-        rules::baseRules
-        defuzzifier::Defuzzifier;
-        accumulation::SNorm;
-        activation::TNorm;
-        disjunction::SNorm;
-        conjunction::TNorm;
+    function _generateDefuzzify()
+
     end
 
-    function createEngine(engine::EngineSkeleton)
-    end
-    function _addInputVariables(engine::Engine,inputs)
+    function _generateProcess()
 
-        values = Expr(:block,[value1,value2,value3]...)
-        x = Expr(:type,[true,:(finalInputVariable<:baseInputsVariables),values])
-    return eval(x)
-    end
-    function _addOutputVariable(output)
     end
     function _addRules(rules)
     end
     function _configure()
     end
 
-    value1 = Expr(:(::),:value1,:Int)
-    value2 = Expr(:(::),:value2,:Int)
-    value3 = Expr(:(::),:value3,:Int)
-    values = Expr(:block,[value1,value2,value3]...)
-    Expr(:type,[true,:(baseInputsVariables),values]...)
+    #value1 = Expr(:(::),:value1,:Int)
+    #value2 = Expr(:(::),:value2,:Int)
+    #value3 = Expr(:(::),:value3,:Int)
+    #values = Expr(:block,[value1,value2,value3]...)
+    #Expr(:type,[true,:(baseInputsVariables),values]...)
 
-    include("_parseExpressions.jl")
+
     include("addInputVariable.jl")
     include("parseRule.jl")
-    include("_parseProposition.jl")
     include("getVariable.jl")
     include("configure.jl")
     include("process.jl")
+
+    include("_addExtraFieldsInput.jl")
+    include("_addExtraFieldsOutput.jl")
+
+    include("_generateEngine.jl")
+    include("_generateTerms.jl")
+    include("_generateVariable.jl")
+    include("_generateVariables.jl")
+
+    include("_instanceEngine.jl")
+    include("_instanceVariable.jl")
+    include("_instanceVariables.jl")
+
+    include("_loadExtraFieldsInput.jl")
+    include("_loadExtraFieldsOutput.jl")
+
+    include("_parseExpressions.jl")
+    include("_parseProposition.jl")
+
+    include("_updateRulesBlocks.jl")
+    include("buildEngine.jl")
 
 end
