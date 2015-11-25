@@ -16,7 +16,7 @@ abstract baseVariables
 abstract baseInputVariables <: baseVariables
 abstract baseOutputVariables <: baseVariables
 
-type InputVariable{T <: FloatingPoint} <: baseInputVariable
+type InputVariable{T <: AbstractFloat} <: baseInputVariable
     value::T
     name::Symbol
     maxValue::T
@@ -40,7 +40,7 @@ type InputVariable{T <: FloatingPoint} <: baseInputVariable
 end
 
 
-type OutputVariable{T <: FloatingPoint} <: baseOutputVariable
+type OutputVariable{T <: AbstractFloat} <: baseOutputVariable
     name::Symbol
 
     defuzzifier::Defuzzifier;

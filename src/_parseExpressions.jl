@@ -1,4 +1,4 @@
-function _parseExpressions(engine::EngineSkeleton, propositions::Vector{String}, T::Type)
+function _parseExpressions(engine::EngineSkeleton, propositions::Vector{AbstractString}, T::Type)
     index = 1
     hasOR = false
     hasAND = false

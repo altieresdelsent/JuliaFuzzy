@@ -1,39 +1,39 @@
 module Defuzzifiers
-    #using Debug 
-    
+    #using Debug
+
     abstract Defuzzifier
     abstract IntegralDefuzzifier <: Defuzzifier
 
-    type Bisector {T <: FloatingPoint} <: IntegralDefuzzifier
+    type Bisector{T <: AbstractFloat} <: IntegralDefuzzifier
         resolution::T
     end
 
-    type Centroid {T <: FloatingPoint} <: IntegralDefuzzifier
+    type Centroid{T <: AbstractFloat} <: IntegralDefuzzifier
         resolution::T
     end
 
-    type FastCentroid {T <: FloatingPoint} <: Defuzzifier
+    type FastCentroid{T <: AbstractFloat} <: Defuzzifier
     end
 
-    type LargestOfMaximum {T <: FloatingPoint} <: IntegralDefuzzifier
+    type LargestOfMaximum{T <: AbstractFloat} <: IntegralDefuzzifier
         resolution::T
     end
 
-    type MeansOfMaximum {T <: FloatingPoint} <: IntegralDefuzzifier
+    type MeansOfMaximum{T <: AbstractFloat} <: IntegralDefuzzifier
         resolution::T
     end
 
-    type SmallestOfMaximum {T <: FloatingPoint} <: IntegralDefuzzifier
+    type SmallestOfMaximum{T <: AbstractFloat} <: IntegralDefuzzifier
         resolution::T
     end
 
-    type Tsukamoto {T <: FloatingPoint} <: Defuzzifier
+    type Tsukamoto{T <: AbstractFloat} <: Defuzzifier
     end
 
-    type WeightedAverage {T <: FloatingPoint} <: IntegralDefuzzifier
+    type WeightedAverage{T <: AbstractFloat} <: IntegralDefuzzifier
     end
 
-    type WeightedSum {T <: FloatingPoint} <: IntegralDefuzzifier
+    type WeightedSum{T <: AbstractFloat} <: IntegralDefuzzifier
     end
 
     include("defuzzify.jl")

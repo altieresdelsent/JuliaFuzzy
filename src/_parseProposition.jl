@@ -1,4 +1,4 @@
-function _parseProposition(engine::EngineSkeleton,propositions::Vector{String}, T::Type,index::Int)
+function _parseProposition(engine::EngineSkeleton,propositions::Vector{AbstractString}, T::Type,index::Int)
 
     variable = getVariable(engine,symbol(propositions[index+2]),T)
     hasVariable = (variable != DoesNotExistVariable()) ? true: throw(ParseError(" Variable $(propositions[index+2])  not found"))

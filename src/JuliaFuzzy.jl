@@ -1,5 +1,4 @@
 module JuliaFuzzy
-	isdefined(:LinearAlgebra) || include("linearAlgebra/LinearAlgebra.jl")
     isdefined(:Norms) || include("norm/Norms.jl")
     isdefined(:Terms) || include("term/Terms.jl")
     isdefined(:Defuzzifiers) || include("defuzzifier/Defuzzifiers.jl")
@@ -48,7 +47,7 @@ module JuliaFuzzy
 
     abstract Engine;
 
-    type EngineSkeleton{T <: FloatingPoint} <: Engine
+    type EngineSkeleton{T <: AbstractFloat} <: Engine
         name::Symbol
         inputVariables::Array{InputVariable{T},1}
         outputVariables::Array{OutputVariable{T},1}

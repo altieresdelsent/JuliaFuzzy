@@ -1,4 +1,4 @@
-function parseRule(engine::EngineSkeleton,rule::String)
+function parseRule(engine::EngineSkeleton,rule::AbstractString)
     if ismatch(r"\sthen\s"i,rule)
         parts = split(rule,r"\sthen\s"i,false)
 

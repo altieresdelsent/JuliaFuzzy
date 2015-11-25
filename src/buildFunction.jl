@@ -1,10 +1,12 @@
-isdefined(:LinearAlgebra) || include("linearAlgebra/LinearAlgebra.jl")
+
 isdefined(:Norms) || include("norm/Norms.jl")
 isdefined(:Terms) || include("term/Terms.jl")
 isdefined(:Defuzzifiers) || include("defuzzifier/Defuzzifiers.jl")
 isdefined(:Variables) || include("variable/Variables.jl")
 isdefined(:Rules) || include("rule/Rules.jl")
 
+using LinearFunc.LinearFunc2D
+using LinearFunc.solveFast
 using .Rules
 using .Variables
 using .Defuzzifiers
@@ -46,7 +48,7 @@ using .Norms.TNorm
 
 using .Terms.Gaussian
 using .Terms.Sigmoid
-using .Terms.Triangular
+using .Terms.Triangle
 
 using .Norms.SNorm
 using .Norms.TNorm
@@ -335,7 +337,7 @@ function buildFunction(engineSkeleton)
                 if afterFirst
                     currentTermVertexA = term.vertexA
                     tanCurrent = term.tan
-                    solutionLinear = solveFast(LinearFunc(oldTerm.vertexC,0.0,oldTerm.vertexB,1.0),LinearFunc(term.vertexA,0.0,term.vertexB,1.0))
+                    solutionLinear = solveFast(LinearFunc2D(oldTerm.vertexC,0.0,oldTerm.vertexB,1.0),LinearFunc2D(term.vertexA,0.0,term.vertexB,1.0))
 
                     innerArea = (solutionLinear.y * (oldTerm.vertexC - term.vertexA)) / 2.0
                     innerCenter = (term.vertexA + oldTerm.vertexC + solutionLinear.x) / 3.0
