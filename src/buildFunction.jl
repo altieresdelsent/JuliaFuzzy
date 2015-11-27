@@ -126,11 +126,11 @@ function buildFunction(engineSkeleton)
             ss = "$(string(inputVariable.name))_$(string(term.name))"
             nameTerm = symbol(ss)
             if typeof(term) <: Gaussian
-                lines = [lines, createGaussian(term.mean,term.standardDeviation,nameInput,nameTerm,term.gaussType)]
+                lines = [lines ; createGaussian(term.mean,term.standardDeviation,nameInput,nameTerm,term.gaussType)]
             elseif typeof(term) <: Triangle
-                lines = [lines, createTriangle(term.vertexA,term.vertexC,nameInput,nameTerm)]
+                lines = [lines ; createTriangle(term.vertexA,term.vertexC,nameInput,nameTerm)]
             elseif typeof(term) <: Sigmoid
-                lines = [lines, createSigmoid(term.inflection,term.slope,nameInput,nameTerm)]
+                lines = [lines ; createSigmoid(term.inflection,term.slope,nameInput,nameTerm)]
             end
             #@bp
         end
@@ -140,7 +140,7 @@ function buildFunction(engineSkeleton)
     function generateFuzzifier(inputVariables)
         lines = Array(Any,0)
         for inputVariable in inputVariables
-            lines = [lines, createFuzzifier(inputVariable)]
+            lines = [lines ; createFuzzifier(inputVariable)]
         end
         return lines
     end
@@ -231,14 +231,14 @@ function buildFunction(engineSkeleton)
         proposition = rule.antecedent.head
         nameVariable = symbol("$(proposition.variable.name)_$(proposition.term.name)")
         blocksInferenceRule = Array(Any,0)
-        blocksInferenceRule = [blocksInferenceRule, :($ruleIdentifier = $nameVariable)]
+        blocksInferenceRule = [blocksInferenceRule ; :($ruleIdentifier = $nameVariable)]
         for operator in rule.antecedent.tail
             proposition = operator.left
             nameVariable = symbol("$(proposition.variable.name)_$(proposition.term.name)")
             if operator.operator == Or()
-                blocksInferenceRule = [blocksInferenceRule, compute(engineSkeleton.disjunction,ruleIdentifier,nameVariable,ruleIdentifier)]
+                blocksInferenceRule = [blocksInferenceRule ; compute(engineSkeleton.disjunction,ruleIdentifier,nameVariable,ruleIdentifier)]
             elseif operator.operator == And()
-                blocksInferenceRule = [blocksInferenceRule, compute(engineSkeleton.conjunction,ruleIdentifier,nameVariable,ruleIdentifier)]
+                blocksInferenceRule = [blocksInferenceRule ; compute(engineSkeleton.conjunction,ruleIdentifier,nameVariable,ruleIdentifier)]
             end
         end
         return blocksInferenceRule
@@ -351,7 +351,7 @@ function buildFunction(engineSkeleton)
                            $(linesInnerTrapezoid...)
                         end
                     end).args
-                    lines = [lines, tempLines]
+                    lines = [lines ; tempLines]
                     lastTermVertexC = term.vertexC
                     tanLast = term.tan
                     lastName = nameVariable
@@ -431,11 +431,11 @@ function buildFunction(engineSkeleton)
 
     lines = Array(Any,0)
     #push!(lines,:(return 0.0))
-    lines = [lines, generateFuzzifier(engineSkeleton.inputVariables)]
+    lines = [lines ; generateFuzzifier(engineSkeleton.inputVariables)]
     #push!(lines,:(return 0.0))
-    lines = [lines, generateInference(engineSkeleton.ruleBlocks[1].rules)]
-    lines = [lines, generateFinalValueOutputVariable(engineSkeleton.ruleBlocks[1].rules,engineSkeleton.outputVariables)]
-    lines = [lines, generateDefuzzifier(engineSkeleton.outputVariables)]
+    lines = [lines ; generateInference(engineSkeleton.ruleBlocks[1].rules)]
+    lines = [lines ; generateFinalValueOutputVariable(engineSkeleton.ruleBlocks[1].rules,engineSkeleton.outputVariables)]
+    lines = [lines ; generateDefuzzifier(engineSkeleton.outputVariables)]
 
     lines = filter((x) -> typeof(x) != LineNumberNode && x.head != :line,lines)
     arguments = Array(Any,0)
