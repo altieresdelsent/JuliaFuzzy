@@ -13,8 +13,8 @@ end
     
     if accumulator.terms[index].term != eliminateTerm
 
-        #accumulator.minimum = min(proposition.variable.minValue,accumulator.minimum)
-        #accumulator.maximum = max(proposition.variable.maxValue,accumulator.maximum)
+        accumulator.minimum = min(proposition.variable.minValue, accumulator.minimum)
+        accumulator.maximum = max(proposition.variable.maxValue, accumulator.maximum)
 
         accumulator.terms[index].degree = degree
     end

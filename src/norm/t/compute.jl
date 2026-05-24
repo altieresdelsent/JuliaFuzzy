@@ -11,6 +11,9 @@ function compute(tType::Minimum, a, b)
 end
 
 function compute(tType::HamacherProduct, a, b)
+    if a == 0.0 && b == 0.0
+        return 0.0
+    end
     return (a * b) / (a + b - a * b);
 end
 

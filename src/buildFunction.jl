@@ -5,8 +5,7 @@ isdefined(@__MODULE__, :Defuzzifiers) || include("defuzzifier/Defuzzifiers.jl")
 isdefined(@__MODULE__, :Variables) || include("variable/Variables.jl")
 isdefined(@__MODULE__, :Rules) || include("rule/Rules.jl")
 
-using LinearFunc.LinearFunc2D
-using LinearFunc.solveFast
+using LinearFunc: LinearFunc2D, solveFast
 using .Rules
 using .Variables
 using .Defuzzifiers

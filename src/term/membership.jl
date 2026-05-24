@@ -28,7 +28,7 @@ function membership(tMember::Trapezoid, crispValue )
         return tMember.height * 0.0;
     end
     if crispValue < tMember.vertexB
-        return tMember.height * minimum(scalar(1.0), (crispValue - tMember.vertexA) / (tMember.vertexB - tMember.vertexA));
+        return tMember.height * min(1.0, (crispValue - tMember.vertexA) / (tMember.vertexB - tMember.vertexA));
     end
     if crispValue <= tMember.vertexC
         return tMember.height * 1.0;
@@ -55,3 +55,7 @@ function membership(tMember::Triangle, crispValue )
         return tMember.height * (tMember.vertexC - crispValue) / (tMember.vertexC - tMember.vertexB);
     end
 end
+
+# Sentinel terms always return zero membership
+membership(::DoesNotMatterTerm, crispValue) = 0.0
+membership(::DoesNotExistTerm, crispValue) = 0.0

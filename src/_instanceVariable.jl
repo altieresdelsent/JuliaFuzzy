@@ -1,7 +1,7 @@
 function _instanceVariable(variableSkeleton,variableType,loadType, verbose = false)
     (verbose) && print("starting _instanceVariable")
     (verbose) && print("\n")
-    functionParenthesis = Array(Any,1+ length(variableSkeleton.terms))
+    functionParenthesis = Vector{Any}(undef, 1+ length(variableSkeleton.terms))
     counter = 0
     counter = counter + 1
     #first parameters has to be the type

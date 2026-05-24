@@ -7,7 +7,7 @@ function _generateEngine(engineSkeleton::EngineSkeleton, verbose = false)
             break;
         end
     end
-    fields = Array(Expr,0)
+    fields = Vector{Expr}(undef, 0)
     (verbose) && print("starting generating input variables")
     (verbose) && print("\n")
     newTypeInputs = _generateVariables(engineSkeleton.inputVariables,InputVariable,verbose)

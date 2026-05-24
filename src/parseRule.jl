@@ -1,16 +1,16 @@
 function parseRule(engine::EngineSkeleton,rule::AbstractString)
     if occursin(r"\sthen\s"i, rule)
-        parts = split(rule,r"\sthen\s"i,keep=false)
+        parts = split(rule, r"\sthen\s"i; keepempty=false)
 
         input = convert(AbstractString,parts[1])
         output = convert(AbstractString,parts[2])
-        inputs = split(input, " ",keep=false)
+        inputs = split(input, " "; keepempty=false)
 
         if uppercase(inputs[1]) == "IF"
             (firstExpr,finaLength) = _parseExpressions(engine,reverse!(inputs),InputVariable)
             (headInput, tailInput) = Rules.toArrayExpression(firstExpr,finaLength)
 
-            outputs = split(output, " ",keep=false)
+            outputs = split(output, " "; keepempty=false)
             (firstExpr,finaLength) = _parseExpressions(engine,reverse!(outputs),OutputVariable)
             (headOutput, tailOutput) = Rules.toArrayExpression(firstExpr,finaLength)
 

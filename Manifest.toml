@@ -1,0 +1,27 @@
+# This file is machine-generated - editing it directly is not advised
+
+julia_version = "1.12.6"
+manifest_format = "2.0"
+project_hash = "c1990999a382df453e40f42e8693c65695ae475e"
+
+[[deps.JuliaFuzzy]]
+deps = ["Random"]
+path = "."
+uuid = "39b59156-c5d9-4edc-b82f-6762453f4ecb"
+version = "0.1.0"
+
+[[deps.LinearFunc]]
+git-tree-sha1 = "f637315ba7c5c1b13782c58d3a50acd075cb11f9"
+repo-rev = "main"
+repo-url = "https://github.com/altieresdelsent/LinearFunc"
+uuid = "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+version = "0.1.1"
+
+[[deps.Random]]
+deps = ["SHA"]
+uuid = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
+version = "1.11.0"
+
+[[deps.SHA]]
+uuid = "ea8e919c-243c-51af-8825-aaa63cd721ce"
+version = "0.7.0"
