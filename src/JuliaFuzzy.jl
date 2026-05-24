@@ -11,6 +11,8 @@ module JuliaFuzzy
     using .Terms
     using .Norms
 
+    using LinearFunc
+
     using .Rules: Rule
     using .Rules: Expression
     using .Rules: Proposition
@@ -111,7 +113,15 @@ module JuliaFuzzy
 
     isdefined(@__MODULE__, :_updateRulesBlocks!) || include("_updateRulesBlocks.jl")
     isdefined(@__MODULE__, :buildEngine) || include("buildEngine.jl")
-    isdefined(@__MODULE__, :buildFunction) || include("buildFunction.jl")
-    isdefined(@__MODULE__, :plotVariable) || include("plotVariable.jl")
+    try
+        isdefined(@__MODULE__, :buildFunction) || include("buildFunction.jl")
+    catch e
+        @warn "buildFunction.jl could not be loaded (optional code generation): $e"
+    end
+    try
+        isdefined(@__MODULE__, :plotVariable) || include("plotVariable.jl")
+    catch e
+        @warn "plotVariable.jl could not be loaded (optional plotting): $e"
+    end
 
 end

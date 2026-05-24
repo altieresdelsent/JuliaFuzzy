@@ -45,6 +45,9 @@ function defuzzify(tType::Centroid, output)
     xcentroid = xcentroid / area
     #ycentroid /= 2 * area;
     #area *= dx; #total area... unused, but for future reference.
+    if isnan(xcentroid)
+        return 0.0
+    end
     return xcentroid
 end
  function getInnerTrapezoid(lastTerm, lastActivation, currentTerm,currentActivation, sumArea, sumAreaMultipliedByMidTerm)

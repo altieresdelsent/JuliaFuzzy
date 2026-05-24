@@ -1,0 +1,11 @@
+using Test
+include("setup.jl")
+include("test_tnorms.jl")
+include("test_snorms.jl")
+include("test_membership.jl")
+include("test_defuzzifiers.jl")
+include("test_rules.jl")
+include("test_activation.jl")
+include("test_engine.jl")
+include("test_invariants.jl")
+include("test_edge_cases.jl")

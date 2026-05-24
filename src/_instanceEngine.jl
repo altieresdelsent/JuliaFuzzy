@@ -1,7 +1,7 @@
 function _instanceEngine(engineSkeleton,engineType,verbose = false)
     (verbose) && print("starting instance engine")
     (verbose) && print("\n")
-    functionParenthesis = Array(Any,0)
+    functionParenthesis = Vector{Any}(undef, 0)
     counter = 0
     #first parameters has to be the tipe
     push!(functionParenthesis,engineType)

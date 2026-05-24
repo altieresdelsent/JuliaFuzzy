@@ -8,7 +8,7 @@ using .SNorms: BoundedSum
 using .SNorms: AlgebraicSum
 
 function compute(sumType::NormalizedSum, a, b)
-    return a + b / max(1.0, max(a, b));
+    return (a + b) / max(1.0, a + b);
 end
 
 function compute(sumType::Maximum, a, b)
@@ -16,6 +16,9 @@ function compute(sumType::Maximum, a, b)
 end
 
 function compute(sumType::HamacherSum, a, b)
+    if a == 1.0 && b == 1.0
+        return 1.0
+    end
     return (a + b - 2 * a * b) / (1 - a * b);
 end
 

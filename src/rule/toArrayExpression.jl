@@ -1,5 +1,5 @@
 function toArrayExpression(firstExpression::Expression, finalLength)
-    array = Array(Operator,finalLength-1)
+    array = Vector{Operator}(undef, finalLength-1)
     currentExpression = firstExpression
     for i in 1 : finalLength
         if isa(currentExpression,Operator)

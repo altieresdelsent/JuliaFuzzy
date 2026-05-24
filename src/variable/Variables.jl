@@ -22,7 +22,7 @@ mutable struct InputVariable{T <: AbstractFloat} <: baseInputVariable
     maxValue::T
     minValue::T
     terms::Array{Term,1}
-    typeFinal::DataType
+    typeFinal::Type
     function InputVariable{T}(value::T = 0.0,
             name = :nothing,
             maxValue::T = 0.0,
@@ -55,7 +55,7 @@ mutable struct OutputVariable{T <: AbstractFloat} <: baseOutputVariable
     _lockOutputRange::Bool
     _lockValidOutput::Bool
     _defaultValue::T
-    typeFinal::DataType
+    typeFinal::Type
 
     function OutputVariable{T}() where T <: AbstractFloat
         newOutput = new{T}()
