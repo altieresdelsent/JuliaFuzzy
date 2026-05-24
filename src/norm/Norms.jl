@@ -1,14 +1,14 @@
 module Norms
     #using Debug
-    abstract Norm
-    abstract SNorm <: Norm
-    abstract TNorm <: Norm
-    type DoesNotExistNorm <: Norm
+    abstract type Norm end
+    abstract type SNorm <: Norm end
+    abstract type TNorm <: Norm end
+    mutable struct DoesNotExistNorm <: Norm
     end
 
-    isdefined(:SNorms) || include("s/SNorms.jl")
-    isdefined(:TNorms) || include("t/TNorms.jl")
-    if !isdefined(:compute)
+    isdefined(@__MODULE__, :SNorms) || include("s/SNorms.jl")
+    isdefined(@__MODULE__, :TNorms) || include("t/TNorms.jl")
+    if !isdefined(@__MODULE__, :compute)
     	include("s/compute.jl")
     	include("t/compute.jl")
     end

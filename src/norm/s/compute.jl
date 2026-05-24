@@ -1,11 +1,11 @@
 #this file is imported in the Norm module
-using .SNorms.NormalizedSum
-using .SNorms.Maximum
-using .SNorms.HamacherSum
-using .SNorms.EinsteinSum
-using .SNorms.DrasticSum
-using .SNorms.BoundedSum
-using .SNorms.AlgebraicSum
+using .SNorms: NormalizedSum
+using .SNorms: Maximum
+using .SNorms: HamacherSum
+using .SNorms: EinsteinSum
+using .SNorms: DrasticSum
+using .SNorms: BoundedSum
+using .SNorms: AlgebraicSum
 
 function compute(sumType::NormalizedSum, a, b)
     return a + b / max(1.0, max(a, b));

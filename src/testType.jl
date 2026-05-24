@@ -1,7 +1,7 @@
 
-    abstract baseTeste
+    abstract type baseTeste end
     hhh = quote
-        type Teste{T <: FloatingPoint} <: baseTeste
+        mutable struct Teste{T <: AbstractFloat} <: baseTeste
             value::T
             value2::T
             name::Symbol
@@ -20,7 +20,7 @@
     abstractType = eval(:baseTeste)
     TypeCreating = :Teste
     mockType = :T
-    mockTypeConstraint = FloatingPoint
+    mockTypeConstraint = AbstractFloat
 
     exprCurlyInner = Expr(:<:,[mockType,mockTypeConstraint]...)
 

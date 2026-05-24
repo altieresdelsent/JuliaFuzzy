@@ -1,9 +1,9 @@
 
-isdefined(:Norms) || include("norm/Norms.jl")
-isdefined(:Terms) || include("term/Terms.jl")
-isdefined(:Defuzzifiers) || include("defuzzifier/Defuzzifiers.jl")
-isdefined(:Variables) || include("variable/Variables.jl")
-isdefined(:Rules) || include("rule/Rules.jl")
+isdefined(@__MODULE__, :Norms) || include("norm/Norms.jl")
+isdefined(@__MODULE__, :Terms) || include("term/Terms.jl")
+isdefined(@__MODULE__, :Defuzzifiers) || include("defuzzifier/Defuzzifiers.jl")
+isdefined(@__MODULE__, :Variables) || include("variable/Variables.jl")
+isdefined(@__MODULE__, :Rules) || include("rule/Rules.jl")
 
 using LinearFunc.LinearFunc2D
 using LinearFunc.solveFast
@@ -13,62 +13,62 @@ using .Defuzzifiers
 using .Terms
 using .Norms
 
-using .Rules.Rule
-using .Rules.Expression
-using .Rules.Proposition
-using .Rules.Operator
-using .Rules.Antecedent
-using .Rules.Consequent
-using .Rules.And
-using .Rules.Or
-using .Rules.LogicalOperator
-using .Rules.RuleBlock
+using .Rules: Rule
+using .Rules: Expression
+using .Rules: Proposition
+using .Rules: Operator
+using .Rules: Antecedent
+using .Rules: Consequent
+using .Rules: And
+using .Rules: Or
+using .Rules: LogicalOperator
+using .Rules: RuleBlock
 
-using .Variables.Variable
-using .Variables.InputVariable
-using .Variables.OutputVariable
-using .Variables.DoesNotExistVariable
-using .Variables.getTerm
-using .Variables.baseInputVariable
-using .Variables.baseOutputVariable
-using .Variables.baseInputVariables
-using .Variables.baseOutputVariables
+using .Variables: Variable
+using .Variables: InputVariable
+using .Variables: OutputVariable
+using .Variables: DoesNotExistVariable
+using .Variables: getTerm
+using .Variables: baseInputVariable
+using .Variables: baseOutputVariable
+using .Variables: baseInputVariables
+using .Variables: baseOutputVariables
 
-using .Defuzzifiers.Defuzzifier
+using .Defuzzifiers: Defuzzifier
 
 using .Terms
-using .Terms.Term
-using .Terms.Accumulated
-using .Terms.Activated
-using .Terms.DoesNotMatterTerm
-using .Terms.DoesNotExistTerm
+using .Terms: Term
+using .Terms: Accumulated
+using .Terms: Activated
+using .Terms: DoesNotMatterTerm
+using .Terms: DoesNotExistTerm
 
-using .Norms.SNorm
-using .Norms.TNorm
+using .Norms: SNorm
+using .Norms: TNorm
 
-using .Terms.Gaussian
-using .Terms.Sigmoid
-using .Terms.Triangle
+using .Terms: Gaussian
+using .Terms: Sigmoid
+using .Terms: Triangle
 
-using .Norms.SNorm
-using .Norms.TNorm
+using .Norms: SNorm
+using .Norms: TNorm
 
-using .Norms.SNorms.AlgebraicSum
-using .Norms.SNorms.BoundedSum
-using .Norms.SNorms.DrasticSum
-using .Norms.SNorms.EinsteinSum
-using .Norms.SNorms.HamacherSum
-using .Norms.SNorms.NormalizedSum
-using .Norms.SNorms.Maximum
+using .Norms.SNorms: AlgebraicSum
+using .Norms.SNorms: BoundedSum
+using .Norms.SNorms: DrasticSum
+using .Norms.SNorms: EinsteinSum
+using .Norms.SNorms: HamacherSum
+using .Norms.SNorms: NormalizedSum
+using .Norms.SNorms: Maximum
 
-using .Norms.TNorms.AlgebraicProduct
-using .Norms.TNorms.BoundedDifference
-using .Norms.TNorms.DrasticProduct
-using .Norms.TNorms.EinsteinProduct
-using .Norms.TNorms.HamacherProduct
-using .Norms.TNorms.Minimum
+using .Norms.TNorms: AlgebraicProduct
+using .Norms.TNorms: BoundedDifference
+using .Norms.TNorms: DrasticProduct
+using .Norms.TNorms: EinsteinProduct
+using .Norms.TNorms: HamacherProduct
+using .Norms.TNorms: Minimum
 
-using Debug
+#using Debug
 function buildFunction(engineSkeleton)
     function createSigmoid(inflection, slope, nameVariable,returnVariable)
 
@@ -82,7 +82,7 @@ function buildFunction(engineSkeleton)
         if typeGaussian == Terms.GaussianType_Left
             gaussian = (quote
                 quotient = $nameVariable + $(-mean)
-                $returnVariable = (quotient <= 0.0)?1.0:exp(-(quotient * quotient) / $twoSdSquared)
+                $returnVariable = (quotient <= 0.0)? 1.0 : exp(-(quotient * quotient) / $twoSdSquared)
             end)
         elseif typeGaussian == Terms.GaussianType_Normal
             gaussian = (quote
@@ -92,7 +92,7 @@ function buildFunction(engineSkeleton)
         elseif typeGaussian == Terms.GaussianType_Right
             gaussian = (quote
                 quotient = $nameVariable + $(-mean)
-                $returnVariable = (quotient >= 0.0)?1.0:exp(-(quotient * quotient) / $twoSdSquared)
+                $returnVariable = (quotient >= 0.0)? 1.0 : exp(-(quotient * quotient) / $twoSdSquared)
             end)
         end
         return gaussian.args

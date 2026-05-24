@@ -1,4 +1,4 @@
-using ..Terms.Activated
+using ..Terms: Activated
 #using Debug 
  function cleanFuzzyOutput(conclusion::Consequent)
     cleanFuzzyOutput(conclusion.head)

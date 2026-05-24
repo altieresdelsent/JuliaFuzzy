@@ -1,6 +1,6 @@
 #print(current_module())
 #using Debug
-using .Rules.activate
+using .Rules: activate
  function process(engine)
 	counter = 0
     for ruleBlock in engine.ruleBlocks        

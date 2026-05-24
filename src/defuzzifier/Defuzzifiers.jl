@@ -1,39 +1,39 @@
 module Defuzzifiers
     #using Debug
 
-    abstract Defuzzifier
-    abstract IntegralDefuzzifier <: Defuzzifier
+    abstract type Defuzzifier end
+    abstract type IntegralDefuzzifier <: Defuzzifier end
 
-    type Bisector{T <: AbstractFloat} <: IntegralDefuzzifier
+    mutable struct Bisector{T <: AbstractFloat} <: IntegralDefuzzifier
         resolution::T
     end
 
-    type Centroid{T <: AbstractFloat} <: IntegralDefuzzifier
+    mutable struct Centroid{T <: AbstractFloat} <: IntegralDefuzzifier
         resolution::T
     end
 
-    type FastCentroid{T <: AbstractFloat} <: Defuzzifier
+    mutable struct FastCentroid{T <: AbstractFloat} <: Defuzzifier
     end
 
-    type LargestOfMaximum{T <: AbstractFloat} <: IntegralDefuzzifier
+    mutable struct LargestOfMaximum{T <: AbstractFloat} <: IntegralDefuzzifier
         resolution::T
     end
 
-    type MeansOfMaximum{T <: AbstractFloat} <: IntegralDefuzzifier
+    mutable struct MeansOfMaximum{T <: AbstractFloat} <: IntegralDefuzzifier
         resolution::T
     end
 
-    type SmallestOfMaximum{T <: AbstractFloat} <: IntegralDefuzzifier
+    mutable struct SmallestOfMaximum{T <: AbstractFloat} <: IntegralDefuzzifier
         resolution::T
     end
 
-    type Tsukamoto{T <: AbstractFloat} <: Defuzzifier
+    mutable struct Tsukamoto{T <: AbstractFloat} <: Defuzzifier
     end
 
-    type WeightedAverage{T <: AbstractFloat} <: IntegralDefuzzifier
+    mutable struct WeightedAverage{T <: AbstractFloat} <: IntegralDefuzzifier
     end
 
-    type WeightedSum{T <: AbstractFloat} <: IntegralDefuzzifier
+    mutable struct WeightedSum{T <: AbstractFloat} <: IntegralDefuzzifier
     end
 
     include("defuzzify.jl")

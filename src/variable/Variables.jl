@@ -1,34 +1,34 @@
 module Variables
 #using Debug
 
-using ..Terms.Term
-using ..Terms.Accumulated
-using ..Terms.DoesNotExistTerm
+using ..Terms: Term
+using ..Terms: Accumulated
+using ..Terms: DoesNotExistTerm
 
-using ..Defuzzifiers.Defuzzifier
-using ..Defuzzifiers.Centroid
-abstract Variable
+using ..Defuzzifiers: Defuzzifier
+using ..Defuzzifiers: Centroid
+abstract type Variable end
 
-abstract baseInputVariable <: Variable
-abstract baseOutputVariable <: Variable
+abstract type baseInputVariable <: Variable end
+abstract type baseOutputVariable <: Variable end
 
-abstract baseVariables
-abstract baseInputVariables <: baseVariables
-abstract baseOutputVariables <: baseVariables
+abstract type baseVariables end
+abstract type baseInputVariables <: baseVariables end
+abstract type baseOutputVariables <: baseVariables end
 
-type InputVariable{T <: AbstractFloat} <: baseInputVariable
+mutable struct InputVariable{T <: AbstractFloat} <: baseInputVariable
     value::T
     name::Symbol
     maxValue::T
     minValue::T
     terms::Array{Term,1}
     typeFinal::DataType
-    function InputVariable(value::T = 0.0,
+    function InputVariable{T}(value::T = 0.0,
             name = :nothing,
             maxValue::T = 0.0,
             minValue::T = 0.0,
-            terms = Array(Term,0))
-        this = new()
+            terms = Term[]) where T <: AbstractFloat
+        this = new{T}()
         this.value = value
         this.name = name
         this.maxValue = maxValue
@@ -40,7 +40,7 @@ type InputVariable{T <: AbstractFloat} <: baseInputVariable
 end
 
 
-type OutputVariable{T <: AbstractFloat} <: baseOutputVariable
+mutable struct OutputVariable{T <: AbstractFloat} <: baseOutputVariable
     name::Symbol
 
     defuzzifier::Defuzzifier;
@@ -57,13 +57,13 @@ type OutputVariable{T <: AbstractFloat} <: baseOutputVariable
     _defaultValue::T
     typeFinal::DataType
 
-    function OutputVariable()
-        newOutput = new()
+    function OutputVariable{T}() where T <: AbstractFloat
+        newOutput = new{T}()
         newOutput.name = :nothing
         newOutput.defuzzifier = Centroid{T}(200.0)
         newOutput.maxValue = 0.0
         newOutput.minValue = 0.0
-        newOutput.terms = Array(Term,0)
+        newOutput.terms = Term[]
         newOutput.termsActivation = Dict{Symbol,T}()
         newOutput.fuzzyOutput = Accumulated{T}()
         newOutput.lastValidOutput = 0.0
@@ -75,15 +75,15 @@ type OutputVariable{T <: AbstractFloat} <: baseOutputVariable
     end
 end
 
-type DoesNotExistVariable <: Variable
+mutable struct DoesNotExistVariable <: Variable
 end
 
-isdefined(:defuzzify) || include("defuzzify.jl")
-isdefined(:getTerm) || include("getTerm.jl")
+isdefined(@__MODULE__, :defuzzify) || include("defuzzify.jl")
+isdefined(@__MODULE__, :getTerm) || include("getTerm.jl")
 
 macro createTest(Name)
 x = quote
-    type $(Name)
+    mutable struct $(Name)
     end
 end
 return eval(x)

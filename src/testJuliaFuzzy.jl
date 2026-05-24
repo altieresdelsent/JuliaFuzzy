@@ -33,7 +33,6 @@ using Debug
 const float = Float64
 const resolution = 100.0
 using Gadfly
-tic()
 
 
     desiredFuzzyFunctionVelocity = EngineSkeleton{float}()
@@ -120,18 +119,16 @@ d = testeLento(rand()*10,rand()*pi)
 toc()
 print("-------------------------------\n")
 
-tic()
 soma = 0.0
-for i in 1:iterations
+for i in 1 : iterations
     (a,b) = testeLento(velocity[i],angle[i])
     soma = soma + a + b
 end
 toc()
 
-tic()
 soma = 0.0
 ttttt = (v,a,f) -> v + a
-for i in 1:iterations
+for i in 1 : iterations
     b = ttttt(velocity[i],angle[i],testeLento)
 end
 toc()

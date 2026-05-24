@@ -1,21 +1,21 @@
 module TNorms
     #using Debug
-    using ..Norms.TNorm
-    type AlgebraicProduct <: TNorm
+    using ..Norms: TNorm
+    mutable struct AlgebraicProduct <: TNorm
     end
 
-    type BoundedDifference <: TNorm
+    mutable struct BoundedDifference <: TNorm
     end
 
-    type DrasticProduct <: TNorm
+    mutable struct DrasticProduct <: TNorm
     end
 
-    type EinsteinProduct <: TNorm
+    mutable struct EinsteinProduct <: TNorm
     end
 
-    type HamacherProduct <: TNorm
+    mutable struct HamacherProduct <: TNorm
     end
 
-    type Minimum <: TNorm
+    mutable struct Minimum <: TNorm
     end
 end

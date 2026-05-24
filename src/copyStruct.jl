@@ -8,5 +8,5 @@ function copyStruct(varType,newName)
         arrayInnerStruct[counter] = Expr(:(::),nameType,typeVariable)
     end
     innerStruct = Expr(:block,arrayInnerStruct...)
-    Expr(:type,[true,symbol(newName),innerStruct]...)
+    Expr(:struct, true, Symbol(newName), innerStruct)
 end

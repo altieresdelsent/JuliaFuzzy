@@ -1,5 +1,5 @@
-using ..Norms.DoesNotExistNorm
-using ..Norms.compute
+using ..Norms: DoesNotExistNorm
+using ..Norms: compute
 
 
 function activationDegree(tMember::Accumulated,forTerm::Term)

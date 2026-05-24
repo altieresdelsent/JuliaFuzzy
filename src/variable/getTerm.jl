@@ -1,4 +1,4 @@
-function getTerm{T <: Variable}(variable::T, name::Symbol)
+function getTerm(variable::T, name::Symbol) where T <: Variable
     for term in variable.terms
         if term.name == name
             return term

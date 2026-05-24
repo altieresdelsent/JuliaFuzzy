@@ -2,8 +2,8 @@ function _generateEngine(engineSkeleton::EngineSkeleton, verbose = false)
     nameType::Symbol = :nothing
     while true
         newName = randstring(10)
-        nameType = symbol("_$newName")
-        if !isdefined(nameType)
+        nameType = Symbol("_$newName")
+        if !isdefined(@__MODULE__, nameType)
             break;
         end
     end
@@ -34,8 +34,8 @@ function _generateEngine(engineSkeleton::EngineSkeleton, verbose = false)
     push!(fields,Expr(:(::),:defuzzifier,Defuzzifier))
 
     inner = Expr(:block,fields...)
-    typeExpr = Expr(:<:,[nameType,Engine]...)
-    newTypeEngineExpr = Expr(:type,[true,typeExpr,inner]...)
+    typeExpr = Expr(:<:, nameType, Engine)
+    newTypeEngineExpr = Expr(:struct, true, typeExpr, inner)
     (verbose) && print("starting generating engine type")
     (verbose) && print("\n")
     (verbose) && print(newTypeEngineExpr)

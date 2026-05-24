@@ -1,25 +1,25 @@
 module SNorms
     #using Debug
-    using ..Norms.SNorm
+    using ..Norms: SNorm
 
-    type AlgebraicSum <: SNorm
+    mutable struct AlgebraicSum <: SNorm
     end
 
-    type BoundedSum <: SNorm
+    mutable struct BoundedSum <: SNorm
     end
 
-    type DrasticSum <: SNorm
+    mutable struct DrasticSum <: SNorm
     end
 
-    type EinsteinSum <: SNorm
+    mutable struct EinsteinSum <: SNorm
     end
 
-    type HamacherSum <: SNorm
+    mutable struct HamacherSum <: SNorm
     end
 
-    type Maximum <: SNorm
+    mutable struct Maximum <: SNorm
     end
 
-    type NormalizedSum <: SNorm
+    mutable struct NormalizedSum <: SNorm
     end
 end
