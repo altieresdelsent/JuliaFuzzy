@@ -1,4 +1,4 @@
-using .Terms.Triangle
+using .Terms: Triangle
  function configure(engine::EngineSkeleton)
 
     for ruleBlock::RuleBlock in engine.ruleBlocks

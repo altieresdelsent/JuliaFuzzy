@@ -1,5 +1,5 @@
-using ..Terms.membership
-using ..Norms.compute
+using ..Terms: membership
+using ..Norms: compute
 #using Debug
 const andOperator = And()
 const orOperator = Or()

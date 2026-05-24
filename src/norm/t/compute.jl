@@ -1,10 +1,10 @@
 #this file is imported in the Norms module
-using .TNorms.Minimum
-using .TNorms.HamacherProduct
-using .TNorms.EinsteinProduct
-using .TNorms.DrasticProduct
-using .TNorms.BoundedDifference
-using .TNorms.AlgebraicProduct
+using .TNorms: Minimum
+using .TNorms: HamacherProduct
+using .TNorms: EinsteinProduct
+using .TNorms: DrasticProduct
+using .TNorms: BoundedDifference
+using .TNorms: AlgebraicProduct
 
 function compute(tType::Minimum, a, b)
     return min(a, b);

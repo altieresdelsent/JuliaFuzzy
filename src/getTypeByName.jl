@@ -1,5 +1,5 @@
 function getTypeByName(tType::DataType,name)
-    sName = symbol(name)
+    sName = Symbol(name)
     namesType = names(tType)
     for nameType in zip(tType.types,tType.names)
         if nameType[2] == sName

@@ -1,5 +1,5 @@
 function parseRule(engine::EngineSkeleton,rule::AbstractString)
-    if ismatch(r"\sthen\s"i,rule)
+    if occursin(r"\sthen\s"i, rule)
         parts = split(rule,r"\sthen\s"i,keep=false)
 
         input = convert(AbstractString,parts[1])

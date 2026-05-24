@@ -2,7 +2,7 @@ function addInputVariable()
 
 end
 x = quote
-    type TestXPTO
+    mutable struct TestXPTO
         value::Float64
     end
 end

@@ -1,8 +1,8 @@
 using .Terms
-using .Terms.membership
+using .Terms: membership
 using Gadfly
 function plotVariable(variable)
-    terms = Array(Function,0)
+    terms = Function[]
     finalMax = realmin(0.0)
     finalMin = realmax(0.0)
     for term in variable.terms

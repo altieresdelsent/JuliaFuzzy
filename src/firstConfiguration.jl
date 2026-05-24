@@ -6,7 +6,7 @@ function firstConfiguration(engine::EngineSkeleton)
     variable.fuzzyOutput.accumulation = engine.accumulation
     accumulator = variable.fuzzyOutput
     index = 0
-    for i in 2:length(variable.terms)
+    for i in 2 : length(variable.terms)
       first = variable.terms[i-1]
       second = variable.terms[i]
 

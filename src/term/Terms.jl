@@ -1,24 +1,24 @@
 module Terms
     #using Debug
 
-    using ..Norms.SNorm
-    using ..Norms.TNorm
-    abstract Term
+    using ..Norms: SNorm
+    using ..Norms: TNorm
+    abstract type Term end
 
-    type Activated{T <: AbstractFloat, B <: Term} <: Term
+    mutable struct Activated{T <: AbstractFloat, B <: Term} <: Term
         term::B
         degree::T
         activation::TNorm
     end
 
-    type Accumulated{T <: AbstractFloat} <: Term
+    mutable struct Accumulated{T <: AbstractFloat} <: Term
         terms::Array{Activated,1}
         minimum::T
         maximum::T
         accumulation::SNorm
-        function Accumulated()
-            acc = new()
-            acc.terms = Array(Activated,0)
+        function Accumulated{T}() where T <: AbstractFloat
+            acc = new{T}()
+            acc.terms = Activated[]
             acc.minimum = prevfloat(typemax(T))
             acc.maximum = prevfloat(typemin(T))
             return acc
@@ -26,7 +26,7 @@ module Terms
     end
 
 
-    type Bell{T <: AbstractFloat, B <: Term} <: Term
+    mutable struct Bell{T <: AbstractFloat, B <: Term} <: Term
         terms::Array{B,1}
         center::T
         width::T
@@ -34,22 +34,22 @@ module Terms
         acumulation::SNorm
     end
 
-    type Constant{T <: AbstractFloat} <: Term
+    mutable struct Constant{T <: AbstractFloat} <: Term
         value::T
     end
 
-    type Discrete{T <: AbstractFloat} <: Term
+    mutable struct Discrete{T <: AbstractFloat} <: Term
         x::Array{T,1}
         y::Array{T,1}
     end
 
-    type functionTerm <: Term
+    mutable struct functionTerm <: Term
     end
     const GaussianType_Left = -1
     const GaussianType_Normal = 0
     const GaussianType_Right = 1
 
-    immutable Gaussian{T <: AbstractFloat} <: Term
+    struct Gaussian{T <: AbstractFloat} <: Term
         name::Symbol
         mean::T
         standardDeviation::T
@@ -57,33 +57,33 @@ module Terms
         maxValue::T
         minValue::T
         gaussType::Int64
-        function Gaussian(name,mean,standardDeviation,typeG=GaussianType_Normal,height=1.0)
+        function Gaussian{T}(name,mean,standardDeviation,typeG=GaussianType_Normal,height=1.0) where T <: AbstractFloat
             minValue = mean-(5*standardDeviation)
             maxValue = mean+(5*standardDeviation)
-            return new(name,mean,standardDeviation,height,maxValue,minValue,typeG)
+            return new{T}(name,mean,standardDeviation,height,maxValue,minValue,typeG)
         end
     end
-    immutable Sigmoid{T <: AbstractFloat} <: Term
+    struct Sigmoid{T <: AbstractFloat} <: Term
         name::Symbol
         slope::T
         inflection::T
         height::T
         maxValue::T
         minValue::T
-        function Sigmoid(name,slope,inflection,height=1.0)
+        function Sigmoid{T}(name,slope,inflection,height=1.0) where T <: AbstractFloat
             minValue = inflection-(6*slope)
             maxValue = inflection+(6*slope)
-            return new(name,slope,inflection,height,maxValue,minValue)
+            return new{T}(name,slope,inflection,height,maxValue,minValue)
         end
     end
 
-    immutable GaussianProduct{T <: AbstractFloat} <: Term
+    struct GaussianProduct{T <: AbstractFloat} <: Term
         meanA
         standardDeviationA
         meanB
         standardDeviationB
     end
-    immutable Trapezoid{T <: AbstractFloat} <: Term
+    struct Trapezoid{T <: AbstractFloat} <: Term
         name::Symbol
         vertexA::T
         vertexB::T
@@ -92,11 +92,11 @@ module Terms
         height::T
         maxValue::T
         minValue::T
-        function Trapezoid(name,a,b,c,d,height=1.0)
-            new(name,a,b,c,d,height,a,d)
+        function Trapezoid{T}(name,a,b,c,d,height=1.0) where T <: AbstractFloat
+            new{T}(name,a,b,c,d,height,a,d)
         end
     end
-    immutable Triangle{T <: AbstractFloat} <: Term
+    struct Triangle{T <: AbstractFloat} <: Term
         name::Symbol
         vertexA::T
         vertexC::T
@@ -109,29 +109,29 @@ module Terms
         intersectionPoint::Array{T,1}
         innerArea::T
         innerCenter::T
-        function Triangle(name,a,c,height=1.0)
+        function Triangle{T}(name,a,c,height=1.0) where T <: AbstractFloat
             maxValue = max(a,c)
             minValue = min(a,c)
             range = maxValue - minValue
             tan = range / (2*height)
-            return new(name,minValue,maxValue,((a+c)/2),height,maxValue,minValue,range,tan,[0.0,0.0],0.0,0.0)
+            return new{T}(name,minValue,maxValue,((a+c)/2),height,maxValue,minValue,range,tan,[0.0,0.0],0.0,0.0)
         end
-        function Triangle(name,a,c,intersectionPoint,innerArea,innerCenter,height=1.0)
+        function Triangle{T}(name,a,c,intersectionPoint,innerArea,innerCenter,height=1.0) where T <: AbstractFloat
             maxValue = max(a,c)
             minValue = min(a,c)
             range = maxValue - minValue
             tan = range / (2*height)
-            return new(name,minValue,maxValue,((a+c)/2),height,maxValue,minValue,range,tan,intersectionPoint,innerArea,innerCenter)
+            return new{T}(name,minValue,maxValue,((a+c)/2),height,maxValue,minValue,range,tan,intersectionPoint,innerArea,innerCenter)
         end
     end
 
 
-    type DoesNotExistTerm <: Term
+    mutable struct DoesNotExistTerm <: Term
     end
 
-    type DoesNotMatterTerm <: Term
+    mutable struct DoesNotMatterTerm <: Term
     end
 
-    isdefined(:membership) || include("membership.jl")
-    isdefined(:Accumulated) || include("Accumulated.jl")
+    isdefined(@__MODULE__, :membership) || include("membership.jl")
+    isdefined(@__MODULE__, :Accumulated) || include("Accumulated.jl")
 end

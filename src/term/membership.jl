@@ -1,4 +1,4 @@
-using ..Norms.compute
+using ..Norms: compute
 #using Debug
 function membership(tMember::Accumulated, crispValue)
     mu = 0.0;

@@ -13,13 +13,13 @@ function _parseExpressions(engine::EngineSkeleton, propositions::Vector{Abstract
 
         while (index+4) <= lengthProp
 
-            hasOR = uppercase(propositions[index+3]) == "OR"? true: !(hasAND = uppercase(propositions[index+3]) == "AND")
+            hasOR = uppercase(propositions[index+3]) == "OR" ? true :  !(hasAND = uppercase(propositions[index+3]) == "AND")
 
             if(hasOR || hasAND)
 
                 index += 4
 
-                operator::LogicalOperator = hasOR?Or():And()
+                operator::LogicalOperator = hasOR ? Or() : And()
                 hasOR = false
                 hasAND = false
 
@@ -36,7 +36,7 @@ function _parseExpressions(engine::EngineSkeleton, propositions::Vector{Abstract
     end
 end
 
-function _parseExpressions(engine::EngineSkeleton, propositions::Vector{SubString{ASCIIString}}, T::Type)
+function _parseExpressions(engine::EngineSkeleton, propositions::Vector{SubString{String}}, T::Type)
     index = 1
     hasOR = false
     hasAND = false
@@ -51,13 +51,13 @@ function _parseExpressions(engine::EngineSkeleton, propositions::Vector{SubStrin
 
         while (index+4) <= lengthProp
 
-            hasOR = uppercase(propositions[index+3]) == "OR"? true: !(hasAND = uppercase(propositions[index+3]) == "AND")
+            hasOR = uppercase(propositions[index+3]) == "OR" ? true :  !(hasAND = uppercase(propositions[index+3]) == "AND")
 
             if(hasOR || hasAND)
 
                 index += 4
 
-                operator::LogicalOperator = hasOR?Or():And()
+                operator::LogicalOperator = hasOR ? Or() : And()
                 hasOR = false
                 hasAND = false
 

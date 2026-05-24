@@ -1,4 +1,4 @@
-function _updateRulesBlocks!{T <: Variable}(variablesSkeleton::Array{T,1}, ruleBlocks::Array{RuleBlock,1},variables,verbose = false)
+function _updateRulesBlocks!(variablesSkeleton::Array{T,1}, ruleBlocks::Array{RuleBlock,1}, variables, verbose = false) where T <: Variable
     (verbose) && print("starting _updateRulesBlocks")
     (verbose) && print("\n")
     for variableSkeleton in variablesSkeleton

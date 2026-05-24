@@ -1,6 +1,6 @@
-using ..Terms.Term
-using ..Terms.DoesNotMatterTerm
-using ..Terms.membership
+using ..Terms: Term
+using ..Terms: DoesNotMatterTerm
+using ..Terms: membership
 #using Debug
 const excludeTerm = DoesNotMatterTerm()
 function defuzzify(tType::Centroid, output)
@@ -17,7 +17,7 @@ function defuzzify(tType::Centroid, output)
     area = 0.0; xcentroid = 0.0; ycentroid = 0.0
     current = (0.5) * dx
     #cacheToPlot = zeros(2,101)
-    for  i in 0.0:tType.resolution
+    for  i in 0.0 : tType.resolution
         #print("\n")
         #print("\t\t\tx:")
         x = minimum + (i + 0.5) * dx

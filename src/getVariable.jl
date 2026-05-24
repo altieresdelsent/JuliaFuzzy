@@ -1,14 +1,14 @@
-using .Variables.baseVariables
+using .Variables: baseVariables
 function getVariable(engine::EngineSkeleton,name::Symbol,T)
     if(T <: Variable)
-        variables = (T <: InputVariable)? engine.inputVariables :
+        variables = (T <: InputVariable) ? engine.inputVariables :
                     engine.outputVariables;
         return getVariable(variables,name)
     else
         throw( ParseError("Typed passed is not variable"))
     end
 end
-function getVariable{T <: Variable}(variables::Array{T,1},name::Symbol)
+function getVariable(variables::Array{T,1}, name::Symbol) where T <: Variable
     for variable in variables
         if variable.name == name
             return variable

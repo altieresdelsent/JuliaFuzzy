@@ -2,44 +2,44 @@
 module Rules
     #using Debug 
     
-    using ..Variables.Variable
-    using ..Terms.Term
-    using ..Norms.TNorm
-    using ..Norms.SNorm
+    using ..Variables: Variable
+    using ..Terms: Term
+    using ..Norms: TNorm
+    using ..Norms: SNorm
 
-    abstract Expression
+    abstract type Expression end
 
-    abstract LogicalOperator
+    abstract type LogicalOperator end
 
 
 
-    type Proposition <: Expression
+    mutable struct Proposition <: Expression
         variable::Variable
         term::Term
     end
 
-    type Operator <: Expression
+    mutable struct Operator <: Expression
        left::Expression
        operator::LogicalOperator
        right::Expression
     end
 
-    type Antecedent
+    mutable struct Antecedent
         head::Proposition
         tail::Array{Operator,1}
     end
 
-    type Consequent
+    mutable struct Consequent
         head::Proposition
         tail::Array{Operator,1}
     end
 
-    type Rule
+    mutable struct Rule
         antecedent::Antecedent
         consequent::Consequent
     end
 
-    type RuleBlock
+    mutable struct RuleBlock
         name::Symbol;
         rules::Array{Rule,1}
         conjunction::TNorm;
@@ -54,23 +54,23 @@ module Rules
         end
     end
 
-    type Or <: LogicalOperator
-    end;
-
-    type And <: LogicalOperator
+    mutable struct Or <: LogicalOperator
     end
 
-    type Not <: LogicalOperator
+    mutable struct And <: LogicalOperator
     end
 
-    type NoOperator <: LogicalOperator
+    mutable struct Not <: LogicalOperator
     end
 
-    isdefined(:toArrayExpression) || include("toArrayExpression.jl")
-    isdefined(:cleanFuzzyOutput) || include("cleanFuzzyOutput.jl")
-    isdefined(:activate) || include("activate.jl")
-    isdefined(:activationDegree) || include("activationDegree.jl")
-    isdefined(:modify) || include("modify.jl")
+    mutable struct NoOperator <: LogicalOperator
+    end
+
+    isdefined(@__MODULE__, :toArrayExpression) || include("toArrayExpression.jl")
+    isdefined(@__MODULE__, :cleanFuzzyOutput) || include("cleanFuzzyOutput.jl")
+    isdefined(@__MODULE__, :activate) || include("activate.jl")
+    isdefined(@__MODULE__, :activationDegree) || include("activationDegree.jl")
+    isdefined(@__MODULE__, :modify) || include("modify.jl")
 
 
 

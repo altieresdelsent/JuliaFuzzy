@@ -1,5 +1,5 @@
-using ..Terms.Activated
-using ..Terms.DoesNotMatterTerm
+using ..Terms: Activated
+using ..Terms: DoesNotMatterTerm
 #using Debug 
 const eliminateTerm = DoesNotMatterTerm()
 function modifyConsequent(conclusion,degree, index)

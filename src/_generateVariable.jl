@@ -6,8 +6,8 @@
         base = Int64
         while true
             newName = randstring(10)
-            nameType = symbol("_$newName")
-            if !isdefined(nameType)
+            nameType = Symbol("_$newName")
+            if !isdefined(@__MODULE__, nameType)
                 break;
             end
         end
@@ -42,11 +42,11 @@
 
 
         #type nameType <: #
-        exprCurlyInner = Expr(:<:,[:T,FloatingPoint]...)
+        exprCurlyInner = Expr(:<:,[:T,AbstractFloat]...)
         typeExprCurly = Expr(:curly,[nameType,exprCurlyInner]...)
         typeExpr = Expr(:<:,[typeExprCurly,base]...)
         fieldsExpr = Expr(:block,terms...)
-        newTypeVariable = Expr(:type,[true,typeExpr,fieldsExpr]...)
+        newTypeVariable = Expr(:struct, true, typeExpr, fieldsExpr)
         #This will create the type in the memory
         (verbose) && print(newTypeVariable)
         (verbose) && print("\n")
