@@ -81,7 +81,7 @@ function buildFunction(engineSkeleton)
         if typeGaussian == Terms.GaussianType_Left
             gaussian = (quote
                 quotient = $nameVariable + $(-mean)
-                $returnVariable = (quotient <= 0.0)? 1.0 : exp(-(quotient * quotient) / $twoSdSquared)
+                $returnVariable = (quotient <= 0.0) ? 1.0 : exp(-(quotient * quotient) / $twoSdSquared)
             end)
         elseif typeGaussian == Terms.GaussianType_Normal
             gaussian = (quote
@@ -91,7 +91,7 @@ function buildFunction(engineSkeleton)
         elseif typeGaussian == Terms.GaussianType_Right
             gaussian = (quote
                 quotient = $nameVariable + $(-mean)
-                $returnVariable = (quotient >= 0.0)? 1.0 : exp(-(quotient * quotient) / $twoSdSquared)
+                $returnVariable = (quotient >= 0.0) ? 1.0 : exp(-(quotient * quotient) / $twoSdSquared)
             end)
         end
         return gaussian.args
@@ -120,10 +120,10 @@ function buildFunction(engineSkeleton)
     function createFuzzifier(inputVariable)
         nameInput = inputVariable.name
         terms = inputVariable.terms
-        lines = Array(Any,0)
+        lines = Vector{Any}()
         for term in terms
             ss = "$(string(inputVariable.name))_$(string(term.name))"
-            nameTerm = symbol(ss)
+            nameTerm = Symbol(ss)
             if typeof(term) <: Gaussian
                 lines = [lines ; createGaussian(term.mean,term.standardDeviation,nameInput,nameTerm,term.gaussType)]
             elseif typeof(term) <: Triangle
@@ -137,7 +137,7 @@ function buildFunction(engineSkeleton)
         return lines
     end
     function generateFuzzifier(inputVariables)
-        lines = Array(Any,0)
+        lines = Vector{Any}()
         for inputVariable in inputVariables
             lines = [lines ; createFuzzifier(inputVariable)]
         end
@@ -226,14 +226,14 @@ function buildFunction(engineSkeleton)
                 $returnVariable = $aName + $bName - ($aName * $bName)
             end).args
         end
-        ruleIdentifier = symbol("rule_$(ruleNumber)")
+        ruleIdentifier = Symbol("rule_$(ruleNumber)")
         proposition = rule.antecedent.head
-        nameVariable = symbol("$(proposition.variable.name)_$(proposition.term.name)")
-        blocksInferenceRule = Array(Any,0)
+        nameVariable = Symbol("$(proposition.variable.name)_$(proposition.term.name)")
+        blocksInferenceRule = Vector{Any}()
         blocksInferenceRule = [blocksInferenceRule ; :($ruleIdentifier = $nameVariable)]
         for operator in rule.antecedent.tail
             proposition = operator.left
-            nameVariable = symbol("$(proposition.variable.name)_$(proposition.term.name)")
+            nameVariable = Symbol("$(proposition.variable.name)_$(proposition.term.name)")
             if operator.operator == Or()
                 blocksInferenceRule = [blocksInferenceRule ; compute(engineSkeleton.disjunction,ruleIdentifier,nameVariable,ruleIdentifier)]
             elseif operator.operator == And()
@@ -243,7 +243,7 @@ function buildFunction(engineSkeleton)
         return blocksInferenceRule
     end
     function convertBlocksIntoBlock(blocksInferenceRule, totalLines)
-        linesOfCode = Array(Any,totalLines)
+        linesOfCode = Vector{Any}(undef, totalLines)
         counter = 0
         for block in blocksInferenceRule
             for line in block
@@ -255,7 +255,7 @@ function buildFunction(engineSkeleton)
     end
     function generateInference(rules)
         counter = 0
-        blockRules = Array(Array{Any,1},length(rules))
+        blockRules = Vector{Vector{Any}}(undef, length(rules))
         totalLines = 0
         for rule in rules
             counter = counter + 1
@@ -266,18 +266,18 @@ function buildFunction(engineSkeleton)
     end
     function generateFinalValueOutputVariable(rules, outputVariables)
 
-        blockInference = Array(Any,0)
+        blockInference = Vector{Any}()
 
         totalLines = 0
         for outputVariable in outputVariables
             for term in outputVariable.terms
                 first = true
                 counterRule = 0
-                nameVariable = symbol("$(outputVariable.name)_$(term.name)")
+                nameVariable = Symbol("$(outputVariable.name)_$(term.name)")
                 for rule in rules
                     counterRule = counterRule + 1
                     if hasVariableAndTerm(rule,outputVariable,term)
-                        ruleNameVariable = symbol("rule_$(counterRule)")
+                        ruleNameVariable = Symbol("rule_$(counterRule)")
                         if first
                             first = false
                             push!(blockInference,:($nameVariable = $ruleNameVariable))
@@ -305,11 +305,11 @@ function buildFunction(engineSkeleton)
     end
     function generateDefuzzifier(variables)
 
-        lines = Array(Any,0)
+        lines = Vector{Any}()
 
         for variable in variables
-            sumAreaName = symbol("sumArea_$(variable.name)")
-            sumAreaCenterName = symbol("sumAreaCenter_$(variable.name)")
+            sumAreaName = Symbol("sumArea_$(variable.name)")
+            sumAreaCenterName = Symbol("sumAreaCenter_$(variable.name)")
 
             lastTermVertexC = 0.0
             tanLast = 0.0
@@ -323,8 +323,8 @@ function buildFunction(engineSkeleton)
 
             terms = sort(variable.terms, by=(term) -> term.vertexB)
             for term in terms
-                nameVariable = symbol("$(variable.name)_$(term.name)")
-                nameVariableArea = symbol("$(variable.name)_$(term.name)_area")
+                nameVariable = Symbol("$(variable.name)_$(term.name)")
+                nameVariableArea = Symbol("$(variable.name)_$(term.name)_area")
                 range = abs(term.vertexA - term.vertexC)
                 center = term.vertexB
                 line = :($nameVariableArea = ($range - ($(term.tan) * $nameVariable)) * $nameVariable)
@@ -428,7 +428,7 @@ function buildFunction(engineSkeleton)
         end
     end
 
-    lines = Array(Any,0)
+    lines = Vector{Any}()
     #push!(lines,:(return 0.0))
     lines = [lines ; generateFuzzifier(engineSkeleton.inputVariables)]
     #push!(lines,:(return 0.0))
@@ -437,7 +437,7 @@ function buildFunction(engineSkeleton)
     lines = [lines ; generateDefuzzifier(engineSkeleton.outputVariables)]
 
     lines = filter((x) -> typeof(x) != LineNumberNode && x.head != :line,lines)
-    arguments = Array(Any,0)
+    arguments = Vector{Any}()
     for inputVariable in engineSkeleton.inputVariables
         push!(arguments,inputVariable.name)
     end
